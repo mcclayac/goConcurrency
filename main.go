@@ -14,7 +14,13 @@ func emit(c chan string) {
 	}
 	fmt.Printf("\nCompleted\n")
 
-	close(c)
+	//close(c)
+}
+
+func emitInt(c chan int) {
+	for {
+		c <- rand.Intn(1000)
+	}
 }
 
 func makeID(idChan chan int) int {
@@ -55,21 +61,49 @@ func makeRandoms(c chan int) {
 
 func main() {
 
-	fmt.Printf("Word Channel Example\n\n")
-	wordChannel := make(chan string)
-	//randoms := make(chan int)
-
-	//randoms = randoms
+	//fmt.Printf("Word Channel Example\n\n")
+	//wordChannel := make(chan string)
+	////randoms := make(chan int)
+	//
+	////randoms = randoms
+	////go emit(wordChannel)
 	//go emit(wordChannel)
-	go emit(wordChannel)
-	fmt.Printf("\nContinues Main\n")
-
-	for word := range wordChannel { // range over a channel,
-		// recieve until the channel is close
-		fmt.Printf(" %s", word)
-	}
+	//fmt.Printf("\nContinues Main\n")
+	//
+	//for word := range wordChannel { // range over a channel,
+	//	// recieve until the channel is close
+	//	fmt.Printf("%s ", word)
+	//}
 
 	fmt.Printf("\n\n=================================\n\n")
+	fmt.Printf("emitInt  Randoms\n\n")
+
+	randoms := make(chan int)
+
+	go emitInt(randoms)
+
+	for count := 0; count < 100; count++ { // range over a channel,
+		// recieve until the channel is close
+		//fmt.Printf("%d ", randoms)
+		fmt.Printf("%d ", randoms)
+
+	}
+
+	//for intRandom := range randoms {
+	//	fmt.Printf("%d ", intRandom)
+	//}
+	fmt.Printf("\n\n=================================\n\n")
+	fmt.Printf("ID Channel\n\n")
+
+	idChan := make(chan int)
+
+	go makeID(idChan)
+
+	fmt.Printf("id : %d\n", <-idChan)
+	fmt.Printf("id : %d\n", <-idChan)
+	fmt.Printf("id : %d\n", <-idChan)
+	fmt.Printf("id : %d\n", <-idChan)
+	fmt.Printf("id : %d\n", <-idChan)
 
 	//go makeRandoms(randoms)
 	//
